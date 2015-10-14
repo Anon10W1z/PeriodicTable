@@ -7,7 +7,13 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Enumeration;
 
+/**
+ * The periodic table frame
+ */
 public class PeriodicTableFrame extends JFrame {
+	/**
+	 * Constructs a new periodic table frame
+	 */
 	public PeriodicTableFrame() {
 		super("Periodic Table");
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -68,17 +74,17 @@ public class PeriodicTableFrame extends JFrame {
 
 		JPanel outputPanel = new JPanel();
 		outputPanel.setLayout(new BoxLayout(outputPanel, BoxLayout.PAGE_AXIS));
-		UneditableTextPane atomicNumberTextPane = new UneditableTextPane("Atomic #: ");
+		JTextPane atomicNumberTextPane = createUneditableTextPane("Atomic #: ");
 		outputPanel.add(atomicNumberTextPane);
-		UneditableTextPane nameTextPane = new UneditableTextPane("Name: ");
+		JTextPane nameTextPane = createUneditableTextPane("Name: ");
 		outputPanel.add(nameTextPane);
-		UneditableTextPane symbolTextPane = new UneditableTextPane("Symbol: ");
+		JTextPane symbolTextPane = createUneditableTextPane("Symbol: ");
 		outputPanel.add(symbolTextPane);
-		UneditableTextPane metallicPropertiesTextPane = new UneditableTextPane("Metallic Properties: ");
+		JTextPane metallicPropertiesTextPane = createUneditableTextPane("Metallic Properties: ");
 		outputPanel.add(metallicPropertiesTextPane);
-		UneditableTextPane matterStateTextPane = new UneditableTextPane("Matter State: ");
+		JTextPane matterStateTextPane = createUneditableTextPane("Matter State: ");
 		outputPanel.add(matterStateTextPane);
-		UneditableTextPane atomicMassTextPane = new UneditableTextPane("Atomic Mass: ");
+		JTextPane atomicMassTextPane = createUneditableTextPane("Atomic Mass: ");
 		outputPanel.add(atomicMassTextPane);
 		lookupButton.addMouseListener(new MouseListener() {
 			@Override
@@ -146,6 +152,9 @@ public class PeriodicTableFrame extends JFrame {
 		}); this.add(outputPanel);
 	}
 
+	/**
+	 * Displays this periodic table frame
+	 */
 	public void display() {
 		ElementData.loadElements(false);
 		this.pack();
@@ -153,7 +162,23 @@ public class PeriodicTableFrame extends JFrame {
 		this.setVisible(true);
 	}
 
+	/**
+	 * Shows the specified information message in a message dialog box
+	 * @param message The message
+	 */
 	private void showInformationMessage(String message) {
 		JOptionPane.showMessageDialog(this, message, "Periodic Table", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	/**
+	 * Creates an uneditable text pane with the specified text
+	 * @param text The text to set the text pane text to
+	 * @return An uneditable text pane with the specified text
+	 */
+	private JTextPane createUneditableTextPane(String text) {
+		JTextPane textPane = new JTextPane();
+		textPane.setText(text);
+		textPane.setEditable(false);
+		return textPane;
 	}
 }

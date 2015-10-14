@@ -28,14 +28,14 @@ public class PeriodicTableTest {
 		try {
 			Method levenshteinMethod = ElementData.class.getDeclaredMethod("levenshteinDistance", String.class, String.class);
 			levenshteinMethod.setAccessible(true);
-			String wrongDistanceMessage = "Wrong levenshtein distance returned";
+			String wrongDistanceMessage = "Wrong Levenshtein distance returned";
 			assertEquals(wrongDistanceMessage, levenshteinMethod.invoke(null, "book", "back"), 2);
 			assertEquals(wrongDistanceMessage, levenshteinMethod.invoke(null, "heir", "hair"), 1);
 			assertEquals(wrongDistanceMessage, levenshteinMethod.invoke(null, "superduperubercool", "supperdupperubbercewl"), 5);
 		} catch (NoSuchMethodException e) {
-			fail("Could not find levenshtein distance method");
+			fail("Could not find Levenshtein distance method");
 		} catch (InvocationTargetException | IllegalAccessException e) {
-			fail("Failed to invoke levenshtein distance method");
+			fail("Failed to invoke Levenshtein distance method");
 		}
 	}
 }

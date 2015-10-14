@@ -10,10 +10,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Stores the data of the elements of the periodic table
+ */
 public class ElementData {
 	public static Element emptyElement = new Element();
 	public static List<Element> elements = new ArrayList<>();
 
+	/**
+	 * Loads/reloads the elements from the elements.txt file
+	 * @param silent whether or not to print success message to console
+	 */
 	public static void loadElements(boolean silent) {
 		try {
 			InputStream elementDataInputStream = ElementData.class.getResourceAsStream("/elementdata.txt");
@@ -56,6 +63,12 @@ public class ElementData {
 		}
 	}
 
+	/**
+	 * Looks up an element by property value and type
+	 * @param property The value to lookup
+	 * @param propertyType The type of value to lookup
+	 * @return The element matching the value and value type
+	 */
 	public static Element lookupElement(String property, String propertyType) {
 		if (property == null || property.trim().length() == 0 || propertyType == null)
 			return emptyElement;
@@ -90,6 +103,12 @@ public class ElementData {
 		return emptyElement;
 	}
 
+	/**
+	 * Returns the Levenshtein distance between the two strings
+	 * @param string1 The first string
+	 * @param string2 The second string
+	 * @return The Levenshtein distance between the two strings
+	 */
 	private static int levenshteinDistance(String string1, String string2) {
 		if (string1 == null || string2 == null)
 			return Integer.MAX_VALUE;
@@ -110,6 +129,11 @@ public class ElementData {
 		return costs[string2.length()];
 	}
 
+	/**
+	 * Gets the real name of a periodic table enum
+	 * @param e the enum
+	 * @return The real name of the periodic table enum
+	 */
 	private static String getRealName(Enum e) {
 		if (e.name().equals("NOT_APPLICABLE"))
 			return "N/A";
@@ -152,6 +176,9 @@ public class ElementData {
 		}
 	}
 
+	/**
+	 * Represents an element on the periodic table
+	 */
 	public static class Element {
 		public int atomicNumber = 0;
 		public String name = "N/A";
