@@ -137,7 +137,8 @@ public class PeriodicTableFrame extends JFrame {
 					metallicPropertiesTextPane.setText("Metallic Properties: " + element.metallicProperties);
 					matterStateTextPane.setText("Matter State: " + element.matterState);
 					atomicMassTextPane.setText("Atomic Mass: " + (element.atomicMass == 0 ? "N/A" : element.atomicMass));
-				} PeriodicTableFrame.this.pack();
+				}
+				PeriodicTableFrame.this.pack();
 			}
 
 			@Override
@@ -149,7 +150,8 @@ public class PeriodicTableFrame extends JFrame {
 			public void mouseExited(MouseEvent e) {
 
 			}
-		}); this.add(outputPanel);
+		});
+		this.add(outputPanel);
 	}
 
 	/**
@@ -164,6 +166,7 @@ public class PeriodicTableFrame extends JFrame {
 
 	/**
 	 * Shows the specified information message in a message dialog box
+	 *
 	 * @param message The message
 	 */
 	private void showInformationMessage(String message) {
@@ -172,6 +175,7 @@ public class PeriodicTableFrame extends JFrame {
 
 	/**
 	 * Creates an uneditable text pane with the specified text
+	 *
 	 * @param text The text to set the text pane text to
 	 * @return An uneditable text pane with the specified text
 	 */

@@ -19,6 +19,7 @@ public class ElementData {
 
 	/**
 	 * Loads/reloads the elements from the elements.txt file
+	 *
 	 * @param silent whether or not to print success message to console
 	 */
 	public static void loadElements(boolean silent) {
@@ -65,7 +66,8 @@ public class ElementData {
 
 	/**
 	 * Looks up an element by property value and type
-	 * @param property The value to lookup
+	 *
+	 * @param property     The value to lookup
 	 * @param propertyType The type of value to lookup
 	 * @return The element matching the value and value type
 	 */
@@ -105,6 +107,7 @@ public class ElementData {
 
 	/**
 	 * Returns the Levenshtein distance between the two strings
+	 *
 	 * @param string1 The first string
 	 * @param string2 The second string
 	 * @return The Levenshtein distance between the two strings
@@ -131,6 +134,7 @@ public class ElementData {
 
 	/**
 	 * Gets the real name of a periodic table enum
+	 *
 	 * @param e the enum
 	 * @return The real name of the periodic table enum
 	 */
