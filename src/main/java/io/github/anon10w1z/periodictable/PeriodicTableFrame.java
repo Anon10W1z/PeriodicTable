@@ -1,6 +1,7 @@
 package io.github.anon10w1z.periodictable;
 
 import io.github.anon10w1z.periodictable.ElementData.Element;
+import io.github.anon10w1z.periodictable.ElementData.PropertyType;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;
@@ -100,35 +101,35 @@ public class PeriodicTableFrame extends JFrame {
 			@SuppressWarnings("ResultOfMethodCallIgnored")
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				String propertyType = "";
+				PropertyType propertyType = null;
 				Enumeration<AbstractButton> buttons = propertyTypeOptions.getElements();
 				while (buttons.hasMoreElements()) {
 					AbstractButton button = buttons.nextElement();
-					if (button.isSelected())
-						propertyType = button.getText();
+					if (button.isSelected()) {
+						String buttonText = button.getText();
+						propertyType = buttonText.equals("Name") ? PropertyType.NAME : (buttonText.equals("Atomic #") ? PropertyType.ATOMIC_NUMBER : (buttonText.equals("Symbol") ? PropertyType.SYMBOL : null));
+					}
 				}
-				if (propertyType.equals(""))
+				if (propertyType == null)
 					showInformationMessage("Please select the property type for lookup.");
 				else if (propertyField.getText().trim().isEmpty())
 					showInformationMessage("Please enter a value to lookup.");
 				else {
 					Element element = ElementData.lookupElement(propertyField.getText(), propertyType);
-					if (propertyType.equals("Name") || propertyType.equals("Symbol") && !propertyField.getText().trim().equalsIgnoreCase(element.name)) {
+					if (propertyType == PropertyType.NAME && element == ElementData.emptyElement) {
 						try {
 							Integer.parseInt(propertyField.getText().trim());
 							showInformationMessage("Element not found.\nDid you mean to lookup by atomic number?");
 						} catch (NumberFormatException e1) {
-							showInformationMessage("Element not found.\nDid you mean to lookup " + element.name + '?');
+							showInformationMessage("Element not found.\nDid you mean to lookup " + ElementData.findClosestElement(propertyField.getText().trim()).name + '?');
 						}
-						element = ElementData.emptyElement;
-					} else if (propertyType.equals("Symbol") && !propertyField.getText().trim().equalsIgnoreCase(element.symbol)) {
+					} else if (propertyType == PropertyType.SYMBOL && element == ElementData.emptyElement) {
 						try {
 							Integer.parseInt(propertyField.getText().trim());
 							showInformationMessage("Element not found.\nDid you mean to lookup by atomic number?");
 						} catch (NumberFormatException ignored) {
-
+							showInformationMessage("Element not found.");
 						}
-						element = ElementData.emptyElement;
 					} else if (element == ElementData.emptyElement)
 						showInformationMessage("Element not found.");
 					atomicNumberTextPane.setText("Atomic #: " + (element.atomicNumber < 1 ? "N/A" : element.atomicNumber));

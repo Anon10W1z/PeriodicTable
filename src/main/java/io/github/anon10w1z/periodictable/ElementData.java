@@ -14,8 +14,8 @@ import java.util.Optional;
  * Stores the data of the elements of the periodic table
  */
 public class ElementData {
-	public static Element emptyElement = new Element();
-	public static List<Element> elements = new ArrayList<>();
+	public static final Element emptyElement = new Element();
+	public static final List<Element> elements = new ArrayList<>();
 
 	/**
 	 * Loads/reloads the elements from the elements.txt file
@@ -71,11 +71,11 @@ public class ElementData {
 	 * @param propertyType The type of value to lookup
 	 * @return The element matching the value and value type
 	 */
-	public static Element lookupElement(String property, String propertyType) {
+	public static Element lookupElement(String property, PropertyType propertyType) {
 		if (property == null || property.trim().length() == 0 || propertyType == null)
 			return emptyElement;
 		property = property.trim();
-		if (propertyType.equals("Atomic #"))
+		if (propertyType == PropertyType.ATOMIC_NUMBER)
 			try {
 				int atomicNumber = Integer.parseInt(property);
 				if (atomicNumber < 1 || atomicNumber > elements.size())
@@ -86,23 +86,30 @@ public class ElementData {
 			}
 
 		for (Element element : elements)
-			if (element.name.equalsIgnoreCase(property) && propertyType.equals("Name"))
+			if (element.name.equalsIgnoreCase(property) && propertyType == PropertyType.NAME)
 				return element;
-			else if (element.symbol.equalsIgnoreCase(property) && propertyType.equals("Symbol"))
+			else if (element.symbol.equalsIgnoreCase(property) && propertyType == PropertyType.SYMBOL)
 				return element;
-		if (propertyType.equals("Name")) {
-			int smallestDistance = Integer.MAX_VALUE;
-			Element closestElement = emptyElement;
-			for (Element element : elements) {
-				int distance = levenshteinDistance(element.name, property);
-				if (distance < smallestDistance) {
-					closestElement = element;
-					smallestDistance = distance;
-				}
-			}
-			return closestElement;
-		}
 		return emptyElement;
+	}
+
+	/**
+	 * Finds the element with the closest name to the specified element name
+	 *
+	 * @param elementName The element name
+	 * @return The element with the closest name to the specified element name
+	 */
+	public static Element findClosestElement(String elementName) {
+		int smallestDistance = Integer.MAX_VALUE;
+		Element closestElement = emptyElement;
+		for (Element element : elements) {
+			int distance = levenshteinDistance(element.name, elementName);
+			if (distance < smallestDistance) {
+				closestElement = element;
+				smallestDistance = distance;
+			}
+		}
+		return closestElement;
 	}
 
 	/**
@@ -145,6 +152,13 @@ public class ElementData {
 		return name.charAt(0) + name.substring(1, name.length()).toLowerCase().replaceAll("_", "-");
 	}
 
+	public enum PropertyType {
+		NAME,
+		ATOMIC_NUMBER,
+		SYMBOL
+	}
+
+	@SuppressWarnings("unused")
 	public enum MetallicProperties {
 		NON_METALLIC,
 		METALLOID,
@@ -162,6 +176,7 @@ public class ElementData {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	public enum MatterState {
 		SOLID,
 		LIQUID,

@@ -1,6 +1,5 @@
-package io.github.anon10w1z.periodictable.tests;
+package io.github.anon10w1z.periodictable;
 
-import io.github.anon10w1z.periodictable.ElementData;
 import io.github.anon10w1z.periodictable.ElementData.MatterState;
 import io.github.anon10w1z.periodictable.ElementData.MetallicProperties;
 import org.junit.Test;
