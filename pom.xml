@@ -10,21 +10,6 @@
     <name>Periodic Table</name>
     <description>A simple periodic table written in Java using the Swing GUI framework</description>
     <url>http://anon10w1z.github.io/PeriodicTable/</url>
-    <scm>
-        <connection>scm:git:git@github.com:Anon10W1z/PeriodicTable.git</connection>
-        <developerConnection>scm:git:git@github.com:Anon10W1z/PeriodicTable.git</developerConnection>
-        <url>git@github.com:Anon10W1z/PeriodicTable.git</url>
-    </scm>
-    <distributionManagement>
-        <repository>
-            <id>oss.sonatype.org</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-        <snapshotRepository>
-            <id>oss.sonatype.org</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
