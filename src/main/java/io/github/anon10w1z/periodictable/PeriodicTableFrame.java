@@ -56,8 +56,8 @@ public class PeriodicTableFrame extends JFrame {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				ElementData.loadElements(true);
-				showInformationMessage("Reloaded elements from elements.txt");
+				ElementData.loadElements(false);
+				showInformationMessage("Reloaded elements from elements.txt successfully");
 			}
 
 			@Override
