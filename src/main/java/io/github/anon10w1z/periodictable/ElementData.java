@@ -1,64 +1,39 @@
 package io.github.anon10w1z.periodictable;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.reflect.Field;
+import org.apache.commons.io.FileUtils;
+
+import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Stores the data of the elements of the periodic table
  */
 public class ElementData {
 	public static final Element emptyElement = new Element();
-	public static final List<Element> elements = new ArrayList<>();
+	public static List<Element> elements = new ArrayList<>();
 
 	/**
-	 * Loads/reloads the elements from the elements.txt file
+	 * Loads/reloads the elements from the elements.ser file
 	 *
 	 * @param silent whether or not to print success message to console
 	 */
+	@SuppressWarnings("unchecked")
 	public static void loadElements(boolean silent) {
 		try {
-			InputStream elementDataInputStream = ElementData.class.getResourceAsStream("/elementdata.txt");
-			if (elementDataInputStream == null)
-				elementDataInputStream = new FileInputStream("elementdata.txt");
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(elementDataInputStream, "UTF-8"));
-			int atomicNumber = 0;
-			String line;
-			while ((line = bufferedReader.readLine()) != null) {
-				line = line.replaceAll("\\{|}", "");
-				String[] properties = line.split(";");
-				Element element = new Element();
-				element.atomicNumber = ++atomicNumber;
-				for (String property : properties) {
-					String[] propertyArray = property.split(":");
-					String propertyName = propertyArray[0].trim();
-					String propertyValue = propertyArray[1].trim();
-					Optional<Field> propertyFieldOptional = Arrays.stream(Element.class.getDeclaredFields()).filter(field -> field.getName().equals(propertyName)).findFirst();
-					if (propertyFieldOptional.isPresent()) {
-						Field propertyField = propertyFieldOptional.get();
-						if (propertyField.getType() == int.class)
-							propertyField.setInt(element, Integer.parseInt(propertyValue));
-						else if (propertyField.getType() == double.class)
-							propertyField.setDouble(element, Double.parseDouble(propertyValue));
-						else if (propertyField.getType() == String.class)
-							propertyField.set(element, propertyValue);
-						else if (propertyField.getType() == MetallicProperties.class)
-							propertyField.set(element, MetallicProperties.fromRealName(propertyValue));
-						else if (propertyField.getType() == MatterState.class)
-							propertyField.set(element, MatterState.fromRealName(propertyValue));
-					}
-				}
-				elements.add(element);
+			try {
+				FileUtils.copyURLToFile(new URL("https://dl.dropboxusercontent.com/u/76347756/elements.ser"), new File("elements.ser"));
+				System.out.println("Downloaded elements file successfully.");
+			} catch (Exception e2) {
+				System.out.println("Failed to download elements file.");
 			}
-			bufferedReader.close();
+			InputStream elementDataInputStream = new FileInputStream("elements.ser");
+			ObjectInput objectInput = new ObjectInputStream(new BufferedInputStream(elementDataInputStream));
+			elements = (List<Element>) objectInput.readObject();
+			objectInput.close();
 			if (!silent)
-				System.out.println("Loaded elements from file successfully.");
+				System.out.println("Loaded elements from elements file successfully.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -84,7 +59,6 @@ public class ElementData {
 			} catch (NumberFormatException ignored) {
 
 			}
-
 		for (Element element : elements)
 			if (element.name.equalsIgnoreCase(property) && propertyType == PropertyType.NAME)
 				return element;
@@ -165,11 +139,6 @@ public class ElementData {
 		METALLIC,
 		NOT_APPLICABLE;
 
-		public static MetallicProperties fromRealName(String realName) {
-			Optional<MetallicProperties> metallicProperties = Arrays.stream(values()).filter(metallicProperties1 -> getRealName(metallicProperties1).equals(realName)).findFirst();
-			return metallicProperties.isPresent() ? metallicProperties.get() : null;
-		}
-
 		@Override
 		public String toString() {
 			return getRealName(this);
@@ -184,11 +153,6 @@ public class ElementData {
 		SYNTHETIC,
 		NOT_APPLICABLE;
 
-		public static MatterState fromRealName(String realName) {
-			Optional<MatterState> matterState = Arrays.stream(values()).filter(matterState1 -> getRealName(matterState1).equals(realName)).findFirst();
-			return matterState.isPresent() ? matterState.get() : null;
-		}
-
 		@Override
 		public String toString() {
 			return getRealName(this);
@@ -198,7 +162,7 @@ public class ElementData {
 	/**
 	 * Represents an element on the periodic table
 	 */
-	public static class Element {
+	public static class Element implements Serializable {
 		public int atomicNumber = 0;
 		public String name = "N/A";
 		public String symbol = "N/A";
